@@ -18,7 +18,7 @@ public class RetryExampleApplication {
 
     return args -> {
       final var message = retryApiService.sayHello("");
-      System.out.println(message.getOutput() + "  ========  " + message.getStatusCode());
+      System.out.println(message.output() + "  ========  " + message.statusCode());
     };
   }
 }
