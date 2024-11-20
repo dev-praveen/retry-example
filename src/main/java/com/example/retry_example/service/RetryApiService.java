@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RetryApiService {
 
+  private static final int SUCCESS_STATUS_CODE = 200;
   private final RetryApiClient retryApiClient;
 
   public RetryApiService(RetryApiClient retryApiClient) {
@@ -19,10 +20,14 @@ public class RetryApiService {
     RetryModelResponse response = null;
     try {
       String output = retryApiClient.retry(input);
-      response = new RetryModelResponse(output, 200);
+      response = new RetryModelResponse(output, SUCCESS_STATUS_CODE);
     } catch (DummyException dummyException) {
-      if (dummyException.getCode() == 500) {
+      if (dummyException.getCode() >= 500) {
         response = new RetryModelResponse("Internal server error", dummyException.getCode());
+      }
+      if (dummyException.getCode() >= 400) {
+        response =
+            new RetryModelResponse("Bad request, please check the input", dummyException.getCode());
       }
     }
     return response;

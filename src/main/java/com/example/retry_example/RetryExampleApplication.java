@@ -17,7 +17,7 @@ public class RetryExampleApplication {
   CommandLineRunner runner(RetryApiService retryApiService) {
 
     return args -> {
-      final var message = retryApiService.sayHello("");
+      final var message = retryApiService.sayHello(null);
       System.out.println(message.output() + "  ========  " + message.statusCode());
     };
   }
